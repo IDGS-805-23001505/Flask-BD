@@ -3,6 +3,7 @@ from flask import flash
 from flask_wtf.csrf import CSRFProtect
 from flask_migrate import Migrate, migrate
 from config import DevelopmentConfig
+from maestros.routes import maestros
 import forms
 
 from models import db, Alumnos
@@ -11,6 +12,7 @@ from models import db, Alumnos
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
+app.register_blueprint(maestros)
 db.init_app(app)
 migrate=Migrate(app,db)
 csrf=CSRFProtect(app)
@@ -45,7 +47,7 @@ def alumnos():
  
  
  
-@app.route("/detalles",methods=['GET','POST'])
+@app.route("/alumnos/detalles",methods=['GET','POST'])
 def detalles():
     if request.method=='GET':
          id=request.args.get('id')
@@ -60,12 +62,11 @@ def detalles():
         
 
 
-@app.route("/modificar", methods=["GET", "POST"])
+@app.route("/alumnos/modificar", methods=["GET", "POST"])
 def modificar():
     create_form = forms.UserForm(request.form)
     if request.method == "GET":
         id = request.args.get("id")
-        # select * from alumnos where id=id
         alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
         create_form.id.data = alum1.id
         create_form.nombre.data = alum1.nombre
@@ -85,12 +86,11 @@ def modificar():
     return render_template("modificar.html", form=create_form)
 
 
-@app.route("/eliminar",methods=['GET','POST'])
+@app.route("/alumnos/eliminar",methods=['GET','POST'])
 def eliminar():
      create_form=forms.UserForm(request.form)
      if request.method=='GET':
          id=request.args.get('id')
-         #select * from alumnos where id=id
          alum1=db.session.query(Alumnos).filter(Alumnos.id==id).first()
          create_form.id.data=alum1.id
          create_form.nombre.data=alum1.nombre
@@ -101,9 +101,7 @@ def eliminar():
             id=create_form.id.data
             alum=Alumnos.query.get(id)
             db.session.delete(alum)
-            ##Se hacer el commit para que guarde
             db.session.commit()
-            ##Reedirige a la pagina del index
             return redirect(url_for('index'))
      return render_template("eliminar.html",form=create_form)
 

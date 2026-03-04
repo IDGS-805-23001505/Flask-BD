@@ -1,17 +1,15 @@
 {% extends "layout.html" %}{% block container %}{% import "_macros.html" 
 as macros%}
 
-
- <div class="mb-5">
-  <a href="{{ url_for('alumnos') }}"
-     class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 transition-all shadow-sm">
+<div class="mb-5">
+  <a href="{{ url_for('maestros.agrega_maestros') }}"
+     class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-md transition-all duration-200">
     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
     </svg>
-    Nuevo Alumno
+    Nuevo Maestro
   </a>
 </div>
- 
 <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
     <table class="w-full text-sm text-left rtl:text-right text-body">
         <thead class="bg-neutral-secondary-soft border-b border-default">
@@ -23,10 +21,10 @@ as macros%}
                     Apellidos
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
-                    Email
+                    Especialidad
                 </th>
                  <th scope="col" class="px-6 py-3 font-medium">
-                    Telefono
+                    Email
                 </th>
                 <th scope="col" class="px-6 py-3 font-medium">
                     Modificar
@@ -40,33 +38,34 @@ as macros%}
             </tr>
         </thead>
         <tbody>
-          {% for alumn in alumno %}
+          {% for maes in maestros %}
             <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
                 <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
-                    {{alumn.nombre}}
+                    {{maes.nombre}}
                 </th>
                 <td class="px-6 py-4">
-                    {{alumn.apellidos}}
+                    {{maes.apellidos}}
                 </td>
                 <td class="px-6 py-4">
-                    {{alumn.email}}
+                    {{maes.especialidad}}
                 </td>
                 <td class="px-6 py-4">
-                    {{alumn.telefono}}
+                    {{maes.email}}
                 </td>
                 <td class="px-6 py-4">
-                    <a href="{{ url_for('modificar', id=alumn.id) }}" class="font-medium text-fg-brand hover:underline">Modificar</a>
+                    <a href="{{ url_for('maestros.modificar_maestros', id=maes.matricula) }}" class="font-medium text-fg-brand hover:underline">Modificar</a>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="{{ url_for('detalles', id=alumn.id) }}" class="font-medium text-fg-brand hover:underline">Detalles</a>
+                    <a href="{{ url_for('maestros.detalles_maestros', id=maes.matricula) }}" class="font-medium text-fg-brand hover:underline">Detalles</a>
                 </td>
                 <td class="px-6 py-4">
-                    <a href="{{ url_for('eliminar', id=alumn.id) }}" class="font-medium text-fg-brand hover:underline">Eliminar</a>
+                    <a href="{{ url_for('maestros.eliminar_maestros', id=maes.matricula) }}" class="font-medium text-fg-brand hover:underline">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
 
 {% endblock %}
