@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block container %}
+{% import "_macros.html" as macros %}
+
+<div class="mb-5">
+  <a href="{{ url_for('inscripciones.agrega_inscripcion') }}"
+     class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-md transition-all duration-200">
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+    </svg>
+    Nueva Inscripción
+  </a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="mb-4 p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+    <table class="w-full text-sm text-left rtl:text-right text-body">
+        <thead class="bg-neutral-secondary-soft border-b border-default">
+            <tr>
+                <th scope="col" class="px-6 py-3 font-medium">ID</th>
+                <th scope="col" class="px-6 py-3 font-medium">Alumno</th>
+                <th scope="col" class="px-6 py-3 font-medium">Curso</th>
+                <th scope="col" class="px-6 py-3 font-medium">Maestro</th>
+                <th scope="col" class="px-6 py-3 font-medium">Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for insc in inscripciones %}
+            <tr class="odd:bg-neutral-primary even:bg-neutral-secondary-soft border-b border-default">
+                <td class="px-6 py-4">{{ insc.id }}</td>
+                <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                    {{ insc.alumno_nombre }} {{ insc.alumno_apellidos }}
+                </th>
+                <td class="px-6 py-4">{{ insc.curso_nombre }}</td>
+                <td class="px-6 py-4">
+                    {% if insc.maestro_nombre and insc.maestro_apellidos %}
+                        {{ insc.maestro_nombre }} {{ insc.maestro_apellidos }}
+                    {% else %}
+                        <span class="text-gray-400">Sin asignar</span>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4">{{ insc.fecha_inscripcion.strftime('%d/%m/%Y %H:%M') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                    No hay inscripciones registradas
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
